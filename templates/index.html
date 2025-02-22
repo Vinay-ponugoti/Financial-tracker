@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; text-align: center; }
+        h1 { color: #333; }
+        form, #filterForm { margin: 20px auto; max-width: 400px; }
+        input, select, button { padding: 8px; margin: 5px; }
+        #balance { font-size: 1.2em; color: #0066cc; }
+        #prediction { font-size: 1em; color: #666; }
+        table { width: 80%; margin: 20px auto; border-collapse: collapse; }
+        th, td { padding: 10px; border: 1px solid #ddd; }
+        th { background-color: #f4f4f4; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .delete-btn { background-color: #ff4444; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+        .delete-btn:hover { background-color: #cc0000; }
+        .anomaly { background-color: #ffcccc; }
+    </style>
+</head>
+<body>
+    <h1>Personal Finance Tracker</h1>
+    <form id="transactionForm">
+        <input type="number" id="amount" placeholder="Amount (e.g., -50 or 100)" step="0.01" required>
+        <input type="text" id="category" placeholder="Category (e.g., Food, auto-suggested)" value="">
+        <input type="text" id="description" placeholder="Description" required>
+        <button type="submit">Add Transaction</button>
+    </form>
+    <p>Total Balance: <span id="balance">$0.00</span></p>
+    <p>Next Month's Predicted Expenses: <span id="prediction">Calculating...</span></p>
+    
+    <form id="filterForm">
+        <select id="categoryFilter">
+            <option value="">All Categories</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <table id="transactionTable">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="transactionBody"></tbody>
+    </table>
+
+    <script>
+        document.getElementById("transactionForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById("amount").value);
+            const category = document.getElementById("category").value || "";
+            const description = document.getElementById("description").value;
+            const response = await fetch("/add_transaction", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount, category, description })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById("category").value = data.category;
+                alert("Transaction added with category: " + data.category);
+                updateAll();
+                e.target.reset();
+            }
+        });
+
+        document.getElementById("filterForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const category = document.getElementById("categoryFilter").value;
+            updateTransactions(category);
+        });
+
+        async function updateBalance() {
+            const response = await fetch("/get_balance");
+            const data = await response.json();
+            document.getElementById("balance").textContent = `$${data.balance.toFixed(2)}`;
+        }
+
+        async function updateTransactions(category = "") {
+            const url = category ? `/get_transactions?category=${encodeURIComponent(category)}` : "/get_transactions";
+            const response = await fetch(url);
+            const data = await response.json();
+            const tbody = document.getElementById("transactionBody");
+            tbody.innerHTML = "";
+            data.transactions.forEach(t => {
+                const row = document.createElement("tr");
+                row.className = t.is_anomaly ? "anomaly" : "";
+                row.innerHTML = `
+                    <td>$${t.amount.toFixed(2)}</td>
+                    <td>${t.category}</td>
+                    <td>${t.date}</td>
+                    <td>${t.description}</td>
+                    <td><button class="delete-btn" onclick="deleteTransaction(${t.id})">Delete</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+            if (!category) updateCategoryFilter(data.transactions);
+        }
+
+        function updateCategoryFilter(transactions) {
+            const select = document.getElementById("categoryFilter");
+            const categories = [...new Set(transactions.map(t => t.category))];
+            select.innerHTML = '<option value="">All Categories</option>';
+            categories.forEach(cat => {
+                const option = document.createElement("option");
+                option.value = cat;
+                option.textContent = cat;
+                select.appendChild(option);
+            });
+        }
+
+        async function updatePrediction() {
+            const response = await fetch("/predict_expenses");
+            const data = await response.json();
+            document.getElementById("prediction").textContent = 
+                data.prediction === "Insufficient data for prediction" 
+                    ? "Add more transactions to predict" 
+                    : `-$${Math.abs(data.prediction).toFixed(2)}`;
+        }
+
+        async function deleteTransaction(id) {
+            if (confirm("Are you sure you want to delete this transaction?")) {
+                const response = await fetch(`/delete_transaction/${id}`, { method: "DELETE" });
+                if (response.ok) {
+                    alert("Transaction deleted!");
+                    updateAll();
+                }
+            }
+        }
+
+        async function updateAll() {
+            await updateBalance();
+            await updateTransactions();
+            await updatePrediction();
+        }
+
+        updateAll();
+    </script>
+</body>
+</html>
