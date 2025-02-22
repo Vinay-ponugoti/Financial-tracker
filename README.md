@@ -3,12 +3,12 @@
 ### Local Setup
 1. **Clone**:
    ```bash
-  :- git clone https://github.com/Vinay-ponugoti/finance-tracker.git
-     cd finance-tracker
+   git clone https://github.com/Vinay-ponugoti/finance-tracker.git
+   cd finance-tracker
 
-  :- pip install -r requirements.txt
+   pip install -r requirements.txt
 
-  :- python app.py
+   python app.py
 
 🌐 API Endpoints
 POST /add_transaction: curl -X POST -d '{"amount": -50, "description": "Lunch"}' -H "Content-Type: application/json" http://localhost:5000/add_transaction
