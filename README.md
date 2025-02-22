@@ -1,6 +1,6 @@
 # Personal Finance Tracker API
 
-A RESTful web app for managing personal finances with AI-driven features like smart categorization, expense prediction, and anomaly detection. Built with Flask and deployed on **Render**’s free tier, this project showcases Python, APIs, and AI skills—tailored for an entry-level software engineering role at IBM.
+A RESTful web app for managing personal finances with AI-driven features like smart categorization, expense prediction, and anomaly detection. Built with Flask and deployed on **Render**’s free tier, this project showcases Python, APIs, and AI skills.
 
 ## 🚀 Live Demo
 - **URL**: [https://financial-tracker-kcl5.onrender.com]
@@ -17,7 +17,7 @@ A RESTful web app for managing personal finances with AI-driven features like sm
 
 ## 🛠️ Tech Stack
 - **Backend**: Python 3.10, Flask 2.3.2
-- **Database**: SQLite (ephemeral; future: PostgreSQL)
+- **Database**: SQLite
 - **AI/ML**: Scikit-learn, NumPy, Regex
 - **Frontend**: HTML, CSS, JavaScript
 - **Deployment**: Render (free tier)
