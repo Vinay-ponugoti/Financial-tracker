@@ -50,4 +50,4 @@ A RESTful web app for managing personal finances with AI-driven features like sm
 - Name: Vinay Ponugoti
 - GitHub: github.com/Vinay-ponugoti
 - LinkedIn: linkedin.com/in/vinay-ponugoti 
-- Email: ponugotiviany.v@gmail.com
+- Email: ponugotivinay.v@gmail.com
