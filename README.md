@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Personal Finance Tracker API
 
 A RESTful web app for managing personal finances with AI-driven features like smart categorization, expense prediction, and anomaly detection. Built with Flask and deployed on **Render**’s free tier, this project showcases Python, APIs, and AI skills—tailored for an entry-level software engineering role at IBM.
@@ -23,7 +22,6 @@ A RESTful web app for managing personal finances with AI-driven features like sm
 - **Frontend**: HTML, CSS, JavaScript
 - **Deployment**: Render (free tier)
 - **Tools**: Git, GitHub
-=======
 ## 🏃‍♂️ Quick Start
 
 ### Local Setup
@@ -36,21 +34,20 @@ A RESTful web app for managing personal finances with AI-driven features like sm
 
    python app.py
 
-🌐 API Endpoints
- POST /add_transaction: curl -X POST -d '{"amount": -50, "description": "Lunch"}' -H "Content-Type: application/json" http://localhost:5000/add_transaction
- GET /get_balance: Fetch balance.
- GET /get_transactions: List with ?category=Food option.
- DELETE /delete_transaction/<id>: Remove entry.
- GET /predict_expenses: Expense forecast.
+## 🌐 API Endpoints
+- POST /add_transaction: curl -X POST -d '{"amount": -50, "description": "Lunch"}' -H "Content-Type: application/json" http://localhost:5000/add_transaction
+-  GET /get_balance: Fetch balance.
+-  GET /get_transactions: List with ?category=Food option.
+-  DELETE /delete_transaction/<id>: Remove entry.
+-  GET /predict_expenses: Expense forecast.
 
-🤖 AI Features
- Smart Categorization: Keyword-based (scalable to NLP).
- Expense Prediction: Linear regression.
- Anomaly Detection: Mean ± 2 std dev.
+## 🤖 AI Features
+ - Smart Categorization: Keyword-based (scalable to NLP).
+ - Expense Prediction: Linear regression.
+ - Anomaly Detection: Mean ± 2 std dev.
 
-Author
-Name: Vinay Ponugoti
-GitHub: github.com/Vinay-ponugoti
-LinkedIn: linkedin.com/in/vinay-ponugoti 
-Email: ponugotiviany.v@gmail.com
->>>>>>> 8db38e9ec8d7584a27267102e3a32ee49e056a3e
+## Author
+- Name: Vinay Ponugoti
+- GitHub: github.com/Vinay-ponugoti
+- LinkedIn: linkedin.com/in/vinay-ponugoti 
+- Email: ponugotiviany.v@gmail.com
